@@ -8,7 +8,12 @@ function Test() {
   const [movieRating, setMovieRating] = useState(0);
   return (
     <div>
-      <StarRating color="blue" onSetRating={setMovieRating} />
+      <StarRating
+        color="blue"
+        onSetRating={setMovieRating}
+        maxRating={5}
+        messages={["Terrible", "Bad", "Ok", "Good", "Superb"]}
+      />
       <p>This movie was rated {movieRating} stars</p>
     </div>
   );
@@ -18,10 +23,6 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    <StarRating
-      maxRating={5}
-      messages={["Terrible", "Bad", "Ok", "Good", "Superb"]}
-    />
     <StarRating
       size={29}
       color="red"
