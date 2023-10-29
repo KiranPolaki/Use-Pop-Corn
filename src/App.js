@@ -58,35 +58,60 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
-  const tempQuery = "Mulan";
+  // useEffect(function () {
+  //   console.log("After initial render");
+  // }, []);
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-        );
+  // useEffect(function () {
+  //   console.log("After every render");
+  // });
 
-        if (!res.ok) {
-          throw new Error("Something went worng with fetching movies");
+  // useEffect(
+  //   function () {
+  //     console.log("D");
+  //   },
+  //   [query]
+  // );
+  // console.log("During render");
+
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+
+          if (!res.ok) {
+            throw new Error("Something went worng with fetching movies");
+          }
+
+          const data = await res.json();
+          if (data.Response === "False") {
+            throw new Error("Movie not Found");
+          }
+          setMovies(data.Search);
+        } catch (err) {
+          // console.log(err.message);
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
         }
-
-        const data = await res.json();
-        if (data.Response === "False") {
-          throw new Error("Movie not Found");
-        }
-        setMovies(data.Search);
-      } catch (err) {
-        // console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
       }
-    }
-    fetchMovies();
-  }, []);
+
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+      fetchMovies();
+    },
+    [query]
+  );
 
   return (
     <>
