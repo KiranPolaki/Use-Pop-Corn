@@ -354,7 +354,7 @@ body {
 }
 
 .loader {
-  border: 10px solid #f3f3f3; /* Light grey */
+  border: 10px solid #f3f3f3;
   border-top: 10px solid var(--color-primary);
   border-radius: 50%;
   width: 80px;
